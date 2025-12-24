@@ -3,7 +3,20 @@ import 'react-calendar-heatmap/dist/styles.css';
 import './App.css'
 import './ColorScale.css'
 import data from './data.json'
+ import { neon } from '@netlify/neon';
 function App() {
+
+  const getData = async () =>
+  {
+   
+const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
+const [post] = await sql`SELECT * FROM test_table`;
+console.log(post)
+return data
+  }
+  const value = process.env.NODE_ENV === 'production' 
+  ? getData()
+  : data 
 
   return (
     <div className="App">
