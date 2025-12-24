@@ -1,15 +1,16 @@
-import type { Context } from "@netlify/functions";
-
-export default async (req: Request, context: Context) => {
-  context.waitUntil(logRequest(req));
-
-  return new Response("Hello, world!");
-};
-
-async function logRequest(req: Request) {
-  await fetch("https://example.com/log", {
-    method: "POST",
-    body: JSON.stringify({ url: req.url, timestamp: Date.now() }),
-    headers: { "Content-Type": "application/json" },
-  });
+import { neon } from '@neondatabase/serverless';
+export async function handler(event) {
+  const sql = neon(process.env.NETLIFY_DATABASE_URL);
+  try {
+    const rows = await sql('SELECT * FROM test_table');
+    return {
+      statusCode: 200,
+      body: JSON.stringify(rows),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
 }

@@ -4,38 +4,42 @@ import './App.css'
 import './ColorScale.css'
 import data from './data.json'
  import { neon } from '@netlify/neon';
+ import {useState, useEffect} from 'react'
+
+function convertKey(arr)
+{
+  const a = arr
+  a.forEach(obj => {
+    obj["date"] = obj["log_date"];
+    delete obj["log_date"];
+    obj["count"]  = obj["entry_count"];
+    delete obj["entry_count"];
+  })
+  return a
+}
 function App() {
 
-  const getDataInProduction = async () =>
-  {
-    console.log("Fetching from Netlify Function...");
+  const [my_data, setData] = useState(null);
+
+  useEffect(() => {
     fetch(`/.netlify/functions/test`)
-    .then(res => console.log(res))
-  // const response = await fetch('./get-data');
-  // const dbData = await response.json();
-  // console.log(dbData);
-  return data;
-  }
-  const getDataInDev = async () => 
-  {
-    console.log("this is dev ")
-    const response = await fetch('./get-data.js');
-  const dbData = await response.json();
-  console.log(dbData);
-  return data;
-  }
-
-
-  const value = process.env.NODE_ENV === 'production' 
-  ? getDataInProduction()
-  : getDataInDev()
+      .then(res => res.json())
+      .then(res => {
+        // 2. Use the setter to save the data
+        console.log(res)
+        const converted = convertKey(res)
+        setData(converted);
+      });
+  }, []);
 
   return (
     <div className="App">
       <CalendarHeatmap
         startDate={new Date('2025-11-01')}
         endDate={new Date('2026-12-01')}
-        values={data}
+        values={
+          my_data ? my_data : []
+        }
         classForValue={(value) => {
           if (!value) {
             return 'color-empty';
