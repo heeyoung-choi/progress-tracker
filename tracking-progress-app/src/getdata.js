@@ -3,7 +3,7 @@ import { neon } from '@netlify/neon';
 
 export const handler = async (event, context) => {
   try {
-    const sql = neon(process.env.NET_DATABASE_URL); // Server can see the env
+    const sql = neon(); // Server can see the env
     const data = await sql`SELECT * FROM test_table`; // Use your table name
     
     return {
