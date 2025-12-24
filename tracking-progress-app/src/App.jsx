@@ -9,15 +9,20 @@ function App() {
   const getDataInProduction = async () =>
   {
     console.log("Fetching from Netlify Function...");
-  const response = await fetch('./get-data');
+    fetch('/netlify/functions/test')
+    .then(res => console.log(res))
+  // const response = await fetch('./get-data');
+  // const dbData = await response.json();
+  // console.log(dbData);
+  return data;
+  }
+  const getDataInDev = async () => 
+  {
+    console.log("this is dev ")
+    const response = await fetch('./get-data.js');
   const dbData = await response.json();
   console.log(dbData);
   return data;
-  }
-  const getDataInDev = () => 
-  {
-    console.log("this is dev ")
-    return data
   }
 
 

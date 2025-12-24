@@ -3,6 +3,7 @@ import { neon } from '@netlify/neon';
 
 export const handler = async (event, context) => {
   try {
+    console.log("access from neon backend")
     const sql = neon(); // Server can see the env
     const data = await sql`SELECT * FROM test_table`; // Use your table name
     
