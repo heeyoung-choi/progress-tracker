@@ -8,11 +8,11 @@ function App() {
 
   const getDataInProduction = async () =>
   {
-    console.log("this is production")
-    const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
-    const [post] = await sql`SELECT * FROM test_table`;
-    console.log(post)
-    return data
+    console.log("Fetching from Netlify Function...");
+  const response = await fetch('/.netlify/functions/get-data');
+  const dbData = await response.json();
+  console.log(dbData);
+  return data;
   }
   const getDataInDev = () => 
   {
