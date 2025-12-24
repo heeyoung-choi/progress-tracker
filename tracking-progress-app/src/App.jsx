@@ -9,7 +9,7 @@ function App() {
   const getDataInProduction = async () =>
   {
     console.log("Fetching from Netlify Function...");
-    fetch(`${process.env.URL}/netlify/functions/test`)
+    fetch(`/.netlify/functions/test`)
     .then(res => console.log(res))
   // const response = await fetch('./get-data');
   // const dbData = await response.json();
