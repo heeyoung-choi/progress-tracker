@@ -6,17 +6,24 @@ import data from './data.json'
  import { neon } from '@netlify/neon';
 function App() {
 
-  const getData = async () =>
+  const getDataInProduction = async () =>
   {
-   
-const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
-const [post] = await sql`SELECT * FROM test_table`;
-console.log(post)
-return data
+    console.log("this is production")
+    const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
+    const [post] = await sql`SELECT * FROM test_table`;
+    console.log(post)
+    return data
   }
+  const getDataInDev = () => 
+  {
+    console.log("this is dev ")
+    return data
+  }
+
+
   const value = process.env.NODE_ENV === 'production' 
-  ? getData()
-  : data 
+  ? getDataInProduction()
+  : getDataInDev()
 
   return (
     <div className="App">
